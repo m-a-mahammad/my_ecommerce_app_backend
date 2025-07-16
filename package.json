@@ -4,9 +4,9 @@
   "main": "./dist/server.js",
   "type": "commonjs",
   "scripts": {
-    "dev": "nodemon main",
+    "dev": "nodemon src/server.ts",
     "build": "tsc",
-    "start": "node main",
+    "start": "node dist/server.js",
     "ts-check": "tsc --noEmit",
     "clean": "rm -rf dist",
     "rebuild": "npm run clean && npm run build"
