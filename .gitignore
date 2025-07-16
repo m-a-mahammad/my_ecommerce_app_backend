@@ -1,5 +1,6 @@
 # Data files - DO NOT COMMIT SENSITIVE SEED DATA
 data/
+seed.ts
 
 # Requests and Responses files - DO NOT COMMIT SENSITIVE SEED DATA
 .rest
