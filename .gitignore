@@ -1,0 +1,22 @@
+# Data files - DO NOT COMMIT SENSITIVE SEED DATA
+data/
+
+# Requests and Responses files - DO NOT COMMIT SENSITIVE SEED DATA
+.rest
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Dependency directories
+node_modules/
+
+# Build output
+dist/
+build/
+coverage/
+
+# Uploads
+uploads/
+temp/
