@@ -55,7 +55,7 @@ export const loginUser = asyncHandler(async (req: Request, res: Response) => {
 
 // ✅ تحديث بيانات المستخدم
 export const updateProfileHandler = asyncHandler(
-  async (req: Request<{ id: string }>, res: Response) => {
+  async (req: Request, res: Response) => {
     const host = req.get("host") || "localhost:3000";
     if (typeof req.userId === "string" && typeof req.file !== "undefined") {
       const { user, error } = await updateProfileHandlerService(
@@ -78,7 +78,7 @@ export const updateProfileHandler = asyncHandler(
 
 // ✅ حذف بيانات المستخدم
 export const deleteProfileImage = asyncHandler(
-  async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     if (typeof req.userId === "string") {
       const { user, error } = await deleteProfileImageService(req.userId);
 
@@ -106,7 +106,7 @@ export const logoutUser = asyncHandler((req, res) => {
 
 // 👤 الحصول على معلومات المستخدم الحالي
 export const getCurrentUser = asyncHandler(
-  async (req: Request<{ id: string }>, res: Response) => {
+  async (req: Request, res: Response) => {
     if (typeof req.userId === "string") {
       const { user, error } = await getCurrentUserService(req.userId);
       if (!user) {
@@ -120,7 +120,7 @@ export const getCurrentUser = asyncHandler(
 
 // 🔁 تحديث كلمة المرور
 export const updatePassword = asyncHandler(
-  async (req: Request<{ id: string }>, res: Response) => {
+  async (req: Request, res: Response) => {
     if (typeof req.userId === "string") {
       const { user, error } = await updatePasswordService(req.body, req.userId);
 
