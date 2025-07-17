@@ -96,22 +96,24 @@ export const updateCartItem = asyncHandler(
 
 // [DELETE] /api/cart/:productId
 export const removeFromCart = asyncHandler(async (req, res) => {
-  if (req.user) {
-    const { productId } = req.params;
-    const userId = req.user._id;
-    const cart = await Cart.findOne({ user: userId });
-    if (!cart) {
-      throwErrorHandling(404, "السلة غير موجودة", res);
-      return;
-    }
-
-    cart.items = cart.items.filter(
-      (item) => item.product.toString() !== productId
-    );
-
-    await cart.save();
-    res.json(cart);
+  if (!req.userId) {
+    res.status(404);
+    throw new Error("معرف المستخدم غير موجود");
   }
+  const { productId } = req.params;
+  const cart = await Cart.findOne({ user: req.userId });
+
+  if (!cart) {
+    throwErrorHandling(404, "السلة غير موجودة", res);
+    return;
+  }
+
+  cart.items = cart.items.filter(
+    (item) => item.product.toString() !== productId
+  );
+
+  await cart.save();
+  res.json(cart);
 });
 
 // Calculate the total for all cart items exist
