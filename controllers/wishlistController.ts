@@ -6,8 +6,7 @@ import { Request, Response } from "express";
 export const getWishlistByUser = asyncHandler(
   async (req: Request, res: Response) => {
     if (req.user) {
-      const userId = req.user._id; // لو عندك auth
-      const items = await Wishlist.find({ user: userId }).populate("product");
+      const items = await Wishlist.find({ user: req.userId }).populate("product");
       res.json(items);
     }
   }
@@ -18,16 +17,15 @@ export const addProductToWishlist = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     if (req.user) {
       const { productId } = req.body;
-      const userId = req.user._id;
 
       const exists = await Wishlist.findOne({
-        user: userId,
+        user: req.userId,
         product: productId,
       });
       if (exists) res.status(400).json({ message: "موجود بالفعل في المفضلة" });
 
-      const item = await Wishlist.create({ user: userId, product: productId });
-      res.status(201).json(item);
+      const items = await Wishlist.create({ user: req.userId, product: productId });
+      res.status(201).json(items);
     }
   }
 );
