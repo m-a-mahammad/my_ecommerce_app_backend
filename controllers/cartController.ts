@@ -13,18 +13,19 @@ const throwErrorHandling = (errNum: number, err: string, res?: Response) => {
 // [GET] /api/cart
 export const getCart = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    if (req.user) {
-      const userId = req.user._id;
-      const cart = await Cart.findOne({ user: userId }).populate(
-        "items.product"
-      );
-      if (!cart) {
-        res.json({ items: [] });
-        return;
-      }
-
-      res.json(cart);
+    if (!req.userId) {
+      res.status(401);
+      throw new Error("غير مصرح: لا يوجد معرف مستخدم");
     }
+    const cart = await Cart.findOne({ user: req.userId }).populate(
+      "items.product"
+    );
+    if (!cart) {
+      res.json({ items: [] });
+      return;
+    }
+
+    res.json(cart);
   }
 );
 
