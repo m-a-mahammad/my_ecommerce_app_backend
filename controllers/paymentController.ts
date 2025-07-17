@@ -4,6 +4,7 @@ import User from "../models/User";
 import Cart from "../models/Cart";
 import { Request, Response } from "express";
 import { CartItem } from "../types/cart.types";
+import env from "../types/env";
 
 export const createIntentionAndLinkToUser = async (
   req: Request,
@@ -45,7 +46,7 @@ export const createIntentionAndLinkToUser = async (
           {
             method: "POST",
             headers: {
-              Authorization: `Token ${process.env.PAYMOB_SECRET_KEY}`,
+              Authorization: `Token ${env.PAYMOB_SECRET_KEY}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
