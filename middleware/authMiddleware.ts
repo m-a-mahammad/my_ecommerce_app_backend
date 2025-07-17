@@ -42,7 +42,7 @@ export const protect = asyncHandler(
 export const adminOnly = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     // Use existing user object if available
-    const user = req.user || (await User.findById(req.userId));
+    const user = req.user || (await User.findById(req.userId).select("-password"));
 
     if (!user || user.role !== "admin") {
       console.log("🚨 Admin access denied for:", user?.email);
