@@ -9,7 +9,16 @@ export const getWishlistByUser = asyncHandler(
       const items = await Wishlist.find({ user: req.userId }).populate(
         "product"
       );
+
+      if (items.length === 0) {
+        res.status(404);
+        throw new Error("لا يوجد منتجات في المفضلة");
+      }
+
       res.json(items);
+    } else {
+      res.status(401);
+      throw new Error("غير مصرح: لا يوجد معرف مستخدم");
     }
   }
 );
@@ -38,10 +47,16 @@ export const addProductToWishlist = asyncHandler(
 // حذف منتج من المفضلة
 export const deleteProductFromWishlist = asyncHandler(async (req, res) => {
   if (req.user) {
-    const userId = req.user._id;
     const productId = req.params.id;
-
-    await Wishlist.findOneAndDelete({ user: userId, product: productId });
+    const item = await Wishlist.findOne({
+      user: req.userId,
+      product: productId,
+    });
+    if (!item) {
+      res.status(404);
+      throw new Error("المنتج غير موجود");
+    }
+    await Wishlist.findOneAndDelete({ user: req.userId, product: productId });
     res.json({ message: "تم الحذف من المفضلة" });
   }
 });
