@@ -121,11 +121,13 @@ export const deleteProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const idParam = req.params.id;
     const product = await Product.findById(idParam);
-    if (product && typeof product === "object") {
-      if (!product) productErrorHandling(res, "المنتج غير موجود", product);
 
-      await Product.findByIdAndDelete(idParam);
-      res.status(200).json({ message: "تم حذف المنتج" });
+    if (!product) {
+      res.status(404);
+      throw new Error("المنتج غير موجود");
     }
+
+    await Product.findByIdAndDelete(idParam);
+    res.status(200).json({ message: "تم حذف المنتج" });
   }
 );
