@@ -21,13 +21,13 @@
 - **Rate Limiting** للمسارات الحساسة
 
 ## 📂 هيكل المشروع
-📁 server
-    ├── controllers
-    ├── middleware
-    ├── models
-    ├── routes
-    ├── uploads
-    ├── seed.js
+📁 server</br>
+    ├── controllers</br>
+    ├── middleware</br>
+    ├── models</br>
+    ├── routes</br>
+    ├── uploads</br>
+    ├── seed.js</br>
     └── server.js
 
 
