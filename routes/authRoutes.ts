@@ -52,8 +52,8 @@ router.post("/register", registerUser); // تسجيل مستخدم جديد
 router.post("/login", loginUser); // تسجيل الدخول
 router.post("/logout", logoutUser); // تسجيل الخروج
 router.get("/me", protect, getCurrentUser); // جلب بيانات المستخدم المسجل (Protected)
-router.put("/me", protect, upload.single("image"), updateProfileHandler);
+router.put("/me", protect, upload.single("image"), updateProfileHandler); // تحديث الصورة الشخصية (Protected)
 router.put("/update-password", protect, updatePassword); // تحديث كلمة المرور (Protected)
-router.delete("/me", protect, deleteProfileImage);
+router.delete("/me", protect, deleteProfileImage); // حذف الصورة الشخصية (Protected)
 
 export default router;

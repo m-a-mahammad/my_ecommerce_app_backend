@@ -7,10 +7,16 @@ import { ProductTypes } from "../types/product.types";
 const productErrorHandling = (
   res: Response,
   err: string,
+  errNum: number,
   product?: ProductTypes
 ) => {
-  res.status(404);
+  res.status(errNum); // 404
   throw new Error(err);
+};
+
+const throwBadRequest = (message: string, res: Response): never => {
+  res.status(400);
+  throw new Error(message);
 };
 
 // 🔼 POST /api/products/upload
@@ -39,6 +45,23 @@ export const createProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { name, description, price, category, brand, image, stock } =
       req.body;
+
+    switch (true) {
+      case !name:
+        throwBadRequest("برجاء إضافة اسم المنتج", res);
+      case !description:
+        throwBadRequest("برجاء إضافة وصف المنتج", res);
+      case !price:
+        throwBadRequest("برجاء تحديد السعر", res);
+      case !category:
+        throwBadRequest("برجاء اختيار الفئة", res);
+      case !brand:
+        throwBadRequest("برجاء تحديد الماركة", res);
+      case !image:
+        throwBadRequest("برجاء رفع صورة المنتج", res);
+      case !stock:
+        throwBadRequest("برجاء تحديد الكمية المتوفرة", res);
+    }
 
     const product = new Product({
       name,
@@ -71,7 +94,7 @@ export const getProductBySlug = asyncHandler(
     const slugParam = req.params.slug;
     const product = await Product.findOne({ slug: slugParam });
 
-    if (!product) productErrorHandling(res, "المنتج غير موجود");
+    if (!product) productErrorHandling(res, "المنتج غير موجود", 404);
 
     res.status(200).json(product);
   }
@@ -83,7 +106,7 @@ export const getProductById = asyncHandler(
     const idParam = req.params.id;
     const product = await Product.findById(idParam);
 
-    if (!product) productErrorHandling(res, "المنتج غير موجود");
+    if (!product) productErrorHandling(res, "المنتج غير موجود", 404);
 
     res.status(200).json(product);
   }
@@ -96,7 +119,7 @@ export const updateProduct = asyncHandler(
     const product = await Product.findById(idParam);
 
     if (product && typeof product === "object") {
-      if (!product) productErrorHandling(res, "المنتج غير موجود", product);
+      if (!product) productErrorHandling(res, "المنتج غير موجود", 404, product);
 
       const { name, description, price, category, brand, image, stock } =
         req.body;

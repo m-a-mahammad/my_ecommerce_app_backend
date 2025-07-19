@@ -14,7 +14,7 @@ import {
 } from "../controllers/productController";
 
 // middleware لحماية المسارات والتحقق من الصلاحيات
-import { protect } from "../middleware/authMiddleware";
+import { adminOnly, protect } from "../middleware/authMiddleware";
 // import { readLimiter, writeLimiter } from "../middleware/limiter";
 
 // ✅ مسارات إدارة المنتجات
@@ -27,13 +27,13 @@ router.get("/:slug", getProductBySlug); // ✅ لازم قبل "/:id"
 /* router.get("/:id", getProductById); */
 
 // إضافة منتج (Admin فقط)
-router.post("/", protect, createProduct);
+router.post("/", protect, adminOnly, createProduct);
 
 // تعديل منتج (Admin فقط)
-router.put("/:id", protect, updateProduct);
+router.put("/:id", protect, adminOnly, updateProduct);
 
 // حذف منتج (Admin فقط)
-router.delete("/:id", protect, deleteProduct);
+router.delete("/:id", protect, adminOnly, deleteProduct);
 
 // رفع صورة المنتج (مثلاً باستخدام multer)
 router.post("/upload", protect, uploadProductImage);
