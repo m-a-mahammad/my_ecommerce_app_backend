@@ -46,7 +46,7 @@ export const createIntentionAndLinkToUser = async (
           {
             method: "POST",
             headers: {
-              Authorization: `Token ${env.PAYMOB_SECRET_KEY}`,
+              Authorization: `Token ${env.PAYMOB_API_KEY}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
