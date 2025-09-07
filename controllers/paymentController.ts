@@ -13,10 +13,16 @@ export const createIntentionAndLinkToUser = async (
   try {
     const userId = req.userId;
 
+    if (!userId) {
+      res.status(401).json({ error: "غير مصرح" });
+      return;
+    }
+
     // 🛒 اسحب السلة من MongoDB
     const cart = await Cart.findOne({ user: userId }).populate("items.product");
     if (!cart || cart.items.length === 0) {
       res.status(400).json({ error: "السلة فارغة" });
+      return;
     }
     if (cart && typeof cart === "object") {
       // 💰 احسب الإجمالي من المنتجات داخل السلة
@@ -39,6 +45,7 @@ export const createIntentionAndLinkToUser = async (
 
         if (!amount || amount < 100 || isNaN(paymentMethodId)) {
           res.status(400).json({ error: "Invalid payment parameters" });
+          return;
         }
 
         const response = await fetch(
@@ -66,12 +73,14 @@ export const createIntentionAndLinkToUser = async (
           data = JSON.parse(raw);
         } catch (e) {
           res.status(502).json({ error: "Paymob returned invalid JSON", raw });
+          return;
         }
 
         if (!response.ok || !data.client_secret) {
           res
             .status(502)
             .json({ error: "Failed to get client_secret from Paymob" });
+          return;
         }
 
         await User.findByIdAndUpdate(userId, {

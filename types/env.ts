@@ -6,7 +6,6 @@ interface EnvVars {
   PAYMOB_API_KEY: string;
   PAYMOB_SECRET_KEY: string;
   PAYMOB_API_URL: string;
-  PAYMOB_INTEGRATION_ID: number;
 }
 
 const env: EnvVars = {
@@ -17,7 +16,6 @@ const env: EnvVars = {
   PAYMOB_API_KEY: process.env.PAYMOB_API_KEY || "",
   PAYMOB_SECRET_KEY: process.env.PAYMOB_SECRET_KEY || "",
   PAYMOB_API_URL: process.env.PAYMOB_API_URL || "",
-  PAYMOB_INTEGRATION_ID: parseInt(process.env.PAYMOB_INTEGRATION_ID || ""),
 };
 
 if (!env.PORT) throw new Error("PORT is missing in .env");
@@ -28,7 +26,5 @@ if (!env.PAYMOB_API_KEY) throw new Error("PAYMOB_API_KEY is missing in .env");
 if (!env.PAYMOB_SECRET_KEY)
   throw new Error("PAYMOB_SECRET_KEY is missing in .env");
 if (!env.PAYMOB_API_URL) throw new Error("PAYMOB_API_URL is missing in .env");
-if (!env.PAYMOB_INTEGRATION_ID)
-  throw new Error("PAYMOB_INTEGRATION_ID is missing in .env");
 
 export default env;
