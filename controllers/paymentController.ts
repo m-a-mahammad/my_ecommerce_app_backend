@@ -11,7 +11,7 @@ export const createIntentionAndLinkToUser = async (
   res: Response
 ): Promise<void> => {
   try {
-    const userId = req.body.userId;
+    const userId = req.userId;
 
     // 🛒 اسحب السلة من MongoDB
     const cart = await Cart.findOne({ user: userId }).populate("items.product");
@@ -46,7 +46,7 @@ export const createIntentionAndLinkToUser = async (
           {
             method: "POST",
             headers: {
-              Authorization: `Token ${env.PAYMOB_API_KEY}`,
+              Authorization: `Token ${env.PAYMOB_SECRET_KEY}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({

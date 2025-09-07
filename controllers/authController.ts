@@ -13,6 +13,8 @@ import {
 import { throwErrorHandling } from "../helpers/helper";
 import env from "../types/env";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 // 📝 تسجيل مستخدم جديد
 export const registerUser = asyncHandler(
   async (req: Request, res: Response) => {
@@ -97,8 +99,8 @@ export const logoutUser = asyncHandler((req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
     expires: new Date(0),
-    sameSite: "none",
-    secure: process.env.NODE_ENV === "production",
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction ? true : false,
     path: "/", // ✅ مهم جدًا
   });
   res.status(200).json({ message: "تم تسجيل الخروج بنجاح" });
@@ -142,10 +144,8 @@ const generateTokenAndSetCookie = (userId: string, res: Response) => {
 
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "none",
-    // secure: false, // لأنك على HTTP
-    // sameSite: "lax", // أو "strict" مؤقتًا، بس "lax" أفضل للتوازن
+    sameSite: isProduction ? "none" : "lax",
+    secure: isProduction ? true : false,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 أيام
   });
 };
